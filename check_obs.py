@@ -25,10 +25,4 @@ def check_obs(obs_installations):
     for r in rules:
         exceptions.append(r(install_info))
 
-    for r, e in exceptions:
-        if len(e):
-            print('Exceptions in rule [{0}]'.format(r))
-            for re in e:
-                print('\tException: {0}'.format(re['exception']))
-                print('\tResolution: {0}'.format(re['resolution']))
-                print('\tType: {0}'.format(re['type']))
+    return exceptions

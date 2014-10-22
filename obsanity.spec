@@ -4,6 +4,12 @@ a = Analysis(['obsanity.py'],
              hiddenimports=[],
              hookspath=None,
              runtime_hooks=None)
+
+a.binaries = a.binaries - TOC([
+ ('user32.dll', '', ''),
+ ('gdi32.dll', '', ''),
+ ('comctl32.dll', '', '')])
+
 pyz = PYZ(a.pure)
 exe = EXE(pyz,
           a.scripts,
@@ -14,4 +20,4 @@ exe = EXE(pyz,
           debug=False,
           strip=None,
           upx=True,
-          console=True )
+          console=False)

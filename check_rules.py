@@ -56,7 +56,8 @@ def check_plugins(install_info):
         import os
         for f in os.listdir(plugin_path):
             pf = path.join(plugin_path, f)
-            if path.isfile(pf) and f.lower().endswith('.dll'):
+            n = f.lower()
+            if path.isfile(pf) and n.endswith('.dll'):
                 mt, ass = pe_check.get_pe_machine_type(pf)
                 m = pe_check.get_pe_machine_string(mt, ass)
                 if (ass):
@@ -73,6 +74,9 @@ def check_plugins(install_info):
                     ))
             else:
                 if not path.isdir(pf):
+                    #pdb files are expected
+                    if n.endswith('.pdb'):
+                        continue
                     exc.append(dict(
                         exception='non-dll file {0} found in plugins base directory {1}'.format(pf, plugin_path),
                         resolution='verify that this file is needed in the plugins directory',

@@ -13,7 +13,9 @@ def main(argv):
     args = parser.parse_args(argv[1:])
 
     from check_obs import check_obs
-    check_obs(args.installs)
+    exc = check_obs(args.installs)
+    from gui import run_gui
+    run_gui(exc)
 
 if __name__ == "__main__":
     import sys
