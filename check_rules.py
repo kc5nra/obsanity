@@ -86,3 +86,60 @@ def check_plugins(install_info):
     stop_rule(len(exc))
 
     return rule, exc
+
+def check_clr_plugins(install_info):
+    rule = start_rule('verify clr plugins directory')
+
+    exc = []
+
+    for k, v in install_info.items():
+        plugin_path = path.join(k, 'plugins')
+        if not path.isfile(path.join(plugin_path, 'CLRHostPlugin.dll')):
+            # don't need to check
+            continue
+
+        clrhost_path = path.join(plugin_path, 'CLRHostPlugin')
+        if not path.isdir(clrhost_path):
+            exc.append(dict(
+                exception='{0} directory does not exist in plugins base directory {1}'.format(clrhost_path, plugin_path),
+                resolution='verify that you installed CLRHostPlugin correctly by extracting the dll AND CLRHostPlugin directory',
+                type='Error'
+            ))
+            continue
+
+        interop_path = path.join(clrhost_path, 'CLRHost.Interop.dll')
+        if not path.isfile(interop_path):
+            exc.append(dict(
+                exception='CLRHost.Interop.dll does not exist in CLRHostPlugin directory {1}'.format(clrhost_path),
+                resolution='verify that you installed CLRHostPlugin correctly by extract the dll AND CLRHostPlugin directory',
+                type='Error'
+            ))
+            continue
+
+        import os
+        for f in os.listdir(clrhost_path):
+            pf = path.join(clrhost_path, f)
+            n = f.lower()
+            if path.isfile(pf) and n.endswith('.dll'):
+                mt, ass = pe_check.get_pe_machine_type(pf)
+                m = pe_check.get_pe_machine_string(mt, ass)
+                if not ass:
+                    exc.append(dict(
+                        exception='{0} expected .NET but was {2}'.format(pf, m),
+                        resolution='reinstall {0} version of {1}'.format(v['machine'], f),
+                        type='Error'
+                    ))
+            else:
+                if not path.isdir(pf):
+                    #pdb files are expected
+                    if n.endswith('.pdb'):
+                        continue
+                    exc.append(dict(
+                        exception='non-dll file {0} found in clr plugin base directory {1}'.format(pf, clrhost_path),
+                        resolution='verify that this file is needed in the clr plugins directory',
+                        type='Notification'
+                    ))
+
+    stop_rule(len(exc))
+
+    return rule, exc

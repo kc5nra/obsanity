@@ -3,7 +3,8 @@ from os import path
 import check_rules
 rules = [
     check_rules.check_install_machine_types,
-    check_rules.check_plugins
+    check_rules.check_plugins,
+    check_rules.check_clr_plugins
 ]
 
 def check_install(install):
@@ -23,6 +24,8 @@ def check_obs(obs_installations):
 
     exceptions = list()
     for r in rules:
-        exceptions.append(r(install_info))
+        e = r(install_info)
+        if len(e):
+            exceptions.append(e)
 
     return exceptions
