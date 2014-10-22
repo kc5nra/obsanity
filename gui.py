@@ -58,6 +58,7 @@ class ErrorForm(form.Form):
         self.error_list.InsertColumns(column_defs)
         self.error_desc = ErrorDescription(parent=self)
         self.error_sb = StatusBar(parent = self)
+        self.error_sb.Simple(True)
 
         error_splitter = splitter.Splitter(parent=self, splitPos=200, orientation=splitter.HORIZONTAL)
         error_splitter.Add(0, self.error_list)
@@ -98,6 +99,7 @@ class ErrorForm(form.Form):
 
         text_to_clipboard(self, hwnd=0, text=url)
         self.error_sb.SetText('Gist URL saved to clipboard')
+        self.error_sb.UpdateWindow()
 
     cmd_handler(form.ID_SAVE)(OnSave)
 

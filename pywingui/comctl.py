@@ -1120,6 +1120,7 @@ if not UNICODE:
 	TVN_DELETEITEM = TVN_FIRST-9
 
 SB_SIMPLE = WM_USER+9
+SB_SETPARTS = 0x0404
 SB_SETTEXT = WM_USER+11
 if not UNICODE:
 	SB_SETTEXT = WM_USER+1
@@ -1518,14 +1519,16 @@ class StatusBar(Window):
 	_window_style_ = WS_CHILD | WS_VISIBLE | SBS_SIZEGRIP
 
 	def Simple(self, fSimple):
-		self.SendMessage(SB_SIMPLE, fSimple, 0)
+		#self.SendMessage(SB_SIMPLE, fSimple, 0)
+		arr = c_long(-1)
+		self.SendMessage(SB_SETPARTS, 1, addressof(arr))
 
 	def SetText(self, text = ''):
 		txt = create_unicode_buffer(text)
 		if not UNICODE:
 			txt = create_string_buffer(text)
 		#~ self.SendMessage(SB_SETTEXT, 255 | SBT_NOBORDERS, addressof(txt))
-		self.SendMessage(SB_SETTEXT, 255 | SBT_NOBORDERS, txt)
+		self.SendMessage(SB_SETTEXT, SBT_NOBORDERS, txt)
 
 class StaticText(Window):
 	_window_class_ = WC_STATIC

@@ -26,7 +26,8 @@ def create_gist(exceptions):
     )
     jsonObj=json.dumps(jsonObj)
 
-    data=urllib2.urlopen('https://api.github.com/gists',jsonObj)
-    data=data.read()
-    jsonResponseData=json.loads(data)
-    return jsonResponseData['html_url']
+    #data=urllib2.urlopen('https://api.github.com/gists',jsonObj)
+    #data=data.read()
+    #    jsonResponseData=json.loads(data)
+    # return jsonResponseData['html_url']
+    return 'http://www.google.com'
