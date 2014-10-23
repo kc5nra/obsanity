@@ -13,9 +13,9 @@ def main(argv):
     args = parser.parse_args(argv[1:])
 
     from check_obs import check_obs
-    exc = check_obs(args.installs)
+    exc, plugin_dump = check_obs(args.installs)
     from gui import run_gui
-    run_gui(exc)
+    run_gui(exc, plugin_dump)
 
 if __name__ == "__main__":
     import sys

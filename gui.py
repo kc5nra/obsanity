@@ -69,8 +69,9 @@ class ErrorForm(form.Form):
         self.controls.Add(self.error_desc)
         self.controls.Add(form.CTRL_STATUSBAR, self.error_sb)
 
-    def add_exceptions(self, exc):
+    def add_exceptions(self, exc, plugin_dump):
         self.exceptions = exc
+        self.plugin_dump = plugin_dump
         self.exc = []
         msg = 'rule {0}: {1}'
         for r, e in exc:
@@ -92,7 +93,7 @@ class ErrorForm(form.Form):
         import gist
         self.error_sb.SetText('Creating gist...')
         try:
-            url = gist.create_gist(self.exceptions)
+            url = gist.create_gist(self.exceptions, self.plugin_dump)
         except:
             self.error_sb.SetText('Failed to create gist :-(')
             return
@@ -104,10 +105,10 @@ class ErrorForm(form.Form):
     cmd_handler(form.ID_SAVE)(OnSave)
 
 
-def run_gui(exceptions):
+def run_gui(exceptions, plugin_dump):
     error_form = ErrorForm(rcPos = RECT(0, 0, 800, 600))
     error_form.ShowWindow()
-    error_form.add_exceptions(exceptions)
+    error_form.add_exceptions(exceptions, plugin_dump)
 
     error_form.application = application = Application()
     application.Run()

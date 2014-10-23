@@ -111,7 +111,7 @@ def check_clr_plugins(install_info):
         if not path.isfile(interop_path):
             exc.append(dict(
                 exception='CLRHost.Interop.dll does not exist in CLRHostPlugin directory {0}'.format(clrhost_path),
-                resolution='verify that you installed CLRHostPlugin correctly by extract the dll AND CLRHostPlugin directory',
+                resolution='verify that you installed CLRHostPlugin correctly by extracting the dll AND CLRHostPlugin directory',
                 type='Error'
             ))
             continue
