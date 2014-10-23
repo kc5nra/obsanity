@@ -125,8 +125,8 @@ def check_clr_plugins(install_info):
                 m = pe_check.get_pe_machine_string(mt, ass)
                 if not ass:
                     exc.append(dict(
-                        exception='{0} expected .NET but was {2}'.format(pf, m),
-                        resolution='reinstall {0} version of {1}'.format(v['machine'], f),
+                        exception='{0} expected .NET assembly but was {1} native'.format(pf, m),
+                        resolution='reinstall the plugin that contains {0}; Only .NET assemblies should be in {1}'.format(f, clrhost_path),
                         type='Error'
                     ))
             else:
